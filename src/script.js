@@ -19,7 +19,7 @@ let selectedListId = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST
 
 listsContainer.addEventListener('click', e => {
     if (e.target.tagName.toLowerCase() === 'li') {
-        const selectedListId = e.target.dataset.listId;
+        selectedListId = e.target.dataset.listId;
         saveAndRender();
     }
 })
@@ -35,6 +35,7 @@ tasksContainer.addEventListener('click', e => {
 })
 
 deleteListButton.addEventListener('click', e => {
+    lists = lists.filter(list => list.id !== selectedListId);
     selectedListId = null;
     saveAndRender();
 })
@@ -63,8 +64,8 @@ newTaskForm.addEventListener('submit', e => {
     const task = createTask(taskName)
     newTaskInput.value = null;
     const selectedList = lists.find(list => list.id === selectedListId);
-    selectedList.task.push(task);
-    saveAndRenderrender()
+    selectedList.tasks.push(task);
+    saveAndRender()
 
 })
 
@@ -89,8 +90,7 @@ const save = () => { //Change to Db
 const render = () => {
     clearElement(listsContainer);
     renderLists()
-    
-    const selectedList = lists.filter(list => listId === selectedListId);
+    const selectedList = lists.find(list => list.id === selectedListId);
 
     if (selectedListId == null) {
         listDisplayContainer.style.display = 'none';
